@@ -3,7 +3,7 @@
 *::before {
     margin: 0;
     padding: 0;
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 
@@ -14,9 +14,9 @@ html {
 body {
   margin: 0;
   padding: 0;
- 
   background: #F3F7FA;
   font-size: 1.6rem;
+  color: #4A4A4A;
   font-family: 'Open Sans', sans-serif;
 }
 

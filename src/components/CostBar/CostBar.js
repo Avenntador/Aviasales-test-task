@@ -3,13 +3,13 @@ import './CostBar.css'
 function CostBar() {
     return(
         <div className="cost_bar">
-            <div>
+            <div className='cost_bar__btn'>
                 <input type="button" value="САМЫЙ ДЕШЕВЫЙ" />
             </div>
-            <div>
+            <div className='cost_bar__btn'>
                 <input type="button" value="САМЫЙ БЫСТРЫЙ" />
             </div>
-            <div>
+            <div className='cost_bar__btn'>
                 <input type="button" value="ОПТИМАЛЬНЫЙ" />
             </div>
         </div>

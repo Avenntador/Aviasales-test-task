@@ -3,3 +3,27 @@
     display: flex;
     width: 50.2rem;
 }
+
+.cost_bar__btn:nth-child(1) input {
+    border-radius: 1rem 0 0 1rem;
+    border-right: none;
+}
+.cost_bar__btn:nth-child(3) input {
+    border-radius: 0 1rem 1rem 0;
+    border-left: none;
+}
+
+input[type="button"] {
+    width: 16.8rem;
+    height: 5rem;
+    font-weight: 600;
+    color: #4A4A4A;
+    background: #FFFFFF;
+    border: 1px solid #DFE5EC;
+    font-size: 1.2rem;
+}
+
+input[type="button"]:hover {
+    background: #2196F3;
+    color: #FFFFFF;
+}
