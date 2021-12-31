@@ -6,7 +6,7 @@ function FilterBar() {
             <p className='filter_bar__title'>Количество пересадок</p>
             <form className='filter_bar__checkbox-list'>
                 <div className='filter_bar__checkbox-item'>
-                    <input type="checkbox" name="all" id="all" />
+                    <input type="checkbox" defaultChecked name="all" id="all" />
                     <label htmlFor="all">Все</label>
                 </div>
                 <div className='filter_bar__checkbox-item'>
