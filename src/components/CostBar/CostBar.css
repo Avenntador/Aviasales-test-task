@@ -13,6 +13,11 @@
     border-left: none;
 }
 
+.active {
+    background: #2196F3 !important;
+    color: #FFFFFF !important;
+}
+
 input[type="button"] {
     width: 16.8rem;
     height: 5rem;
@@ -27,3 +32,4 @@ input[type="button"]:hover {
     background: #2196F3;
     color: #FFFFFF;
 }
+

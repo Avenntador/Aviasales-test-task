@@ -4,21 +4,10 @@ import FilterBar from './components/FilterBar/FilterBar';
 import CostBar from './components/CostBar/CostBar';
 import TicketList from './components/TicketList/TicketList';
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+// import { useState, useEffect } from 'react';
+// import axios from 'axios';
 
 function App() {
-
-  const [searchId, setSearchId] = useState('');
-  
-
-  useEffect(() => {
-    axios.get('https://front-test.beta.aviasales.ru/search')
-    .then(response => setSearchId(response.data.searchId))
-  }, [])
-  
-
- 
   return (
     <>
       <Header />
@@ -28,7 +17,7 @@ function App() {
         </div>
         <div className="row">
           <CostBar />
-          <TicketList searchId={searchId}/>
+          <TicketList />
         </div>
 
       </main>
