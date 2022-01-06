@@ -1,4 +1,4 @@
-import { getFlightDate } from '../Utility/getFlightDate'
+import { getFlightDate } from '../getFlightDate'
 
 function Backward({ backward }) {
 

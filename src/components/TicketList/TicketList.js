@@ -1,11 +1,12 @@
 import './TicketList.css'
-
+import axios from 'axios';
 import Ticket from "./Ticket/Ticket";
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getFilteredTickets } from './getFilteredTickets';
+import { getSortedTickets } from './getSortedTickets'
 
 
-function TicketList() {
+function TicketList({ selectedFilter, selectedCost}) {
 
     const [searchId, setSearchId] = useState('');
     const [tickets, setTickets] = useState([]);
@@ -17,28 +18,28 @@ function TicketList() {
                 setSearchId(response.data.searchId);
                 getTickets(response.data.searchId);
             })
-    }, [])
+    }, [selectedFilter, selectedCost])
 
     const getTickets = async (searchId) => {
         try {
-            let tickets = await axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`)
-            setTickets(tickets.data.tickets)
-        } catch(e) {
-            console.log("================");
-            console.log('Error with ' + e);
-            console.log('Please reload page');
-            console.log("================");
+            let tickets = await axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
+            let filteredTickets = getSortedTickets(getFilteredTickets(tickets.data.tickets, selectedFilter), selectedCost);
+            setTickets(filteredTickets);
+        } catch (e) {
+            setTimeout(() => {
+                getTickets(searchId);
+            }, 500);
         }
     }
 
     const showMoreTickets = () => {
-        setTicketShowAmount(prev => prev+=5);
+        setTicketShowAmount(prev => prev += 5);
     }
 
     return (
         <div className='ticket-list'>
             {tickets.map((ticket, idx) => {
-                if (idx < ticketShowAmount ) {
+                if (idx < ticketShowAmount) {
                     return <Ticket key={ticket.price.toString() + ticket.carrier} ticket={ticket} />
                 }
             })}
