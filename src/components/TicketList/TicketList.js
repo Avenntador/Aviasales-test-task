@@ -16,20 +16,26 @@ function TicketList({ selectedFilter, selectedCost}) {
         axios.get('https://front-test.beta.aviasales.ru/search')
             .then(response => {
                 setSearchId(response.data.searchId);
-                getTickets(response.data.searchId);
+                getTickets(response.data.searchId);    
             })
+    }, [])
+
+    useEffect(() => {
+        getTickets(searchId);
     }, [selectedFilter, selectedCost])
 
     const getTickets = async (searchId) => {
-        try {
-            let tickets = await axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
-            let filteredTickets = getSortedTickets(getFilteredTickets(tickets.data.tickets, selectedFilter), selectedCost);
-            setTickets(filteredTickets);
-        } catch (e) {
-            setTimeout(() => {
-                getTickets(searchId);
-            }, 500);
-        }
+        if (searchId) {
+            try {
+                let tickets = await axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
+                let filteredTickets = getSortedTickets(getFilteredTickets(tickets.data.tickets, selectedFilter), selectedCost);
+                setTickets(filteredTickets);
+            } catch (e) {
+                setTimeout(() => {
+                    getTickets(searchId);
+                }, 500);
+            }
+        }   
     }
 
     const showMoreTickets = () => {

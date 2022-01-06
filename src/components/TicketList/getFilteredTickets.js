@@ -1,6 +1,3 @@
-
-
-
 export function getFilteredTickets(tickets, filterData) {
 
    if (filterData.includes('all') || filterData.length === 0) return tickets;
@@ -21,12 +18,10 @@ export function getFilteredTickets(tickets, filterData) {
 
 }   
 
-
 function shuffle(array) {
    for (let i = array.length - 1; i > 0; i--) {
      let j = Math.floor(Math.random() * (i + 1));
      [array[i], array[j]] = [array[j], array[i]];
    }
-
    return array;
  }
