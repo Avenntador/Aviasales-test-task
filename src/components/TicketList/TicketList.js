@@ -5,50 +5,71 @@ import { useState, useEffect } from 'react';
 import { getFilteredTickets } from './getFilteredTickets';
 import { getSortedTickets } from './getSortedTickets'
 
-
 function TicketList({ selectedFilter, selectedCost}) {
 
     const [searchId, setSearchId] = useState('');
     const [tickets, setTickets] = useState([]);
     const [ticketShowAmount, setTicketShowAmount] = useState(5);
-
+    const [ticketsStop, setTicketsStop] = useState(false);
+    
     useEffect(() => {
-        axios.get('https://front-test.beta.aviasales.ru/search')
+        getSearchId();
+    }, [ticketsStop])
+   
+
+    const getSearchId = async () => {
+        axios.get('https://front-test.beta.aviasales.ru/search')  
             .then(response => {
                 setSearchId(response.data.searchId);
-                getTickets(response.data.searchId);    
+                getTicketsFromServer(response.data.searchId);
+                if (ticketsStop) setTicketsStop(false);
             })
-    }, [])
+    }
 
-    useEffect(() => {
-        getTickets(searchId);
-    }, [selectedFilter, selectedCost])
+    const getTickets = () => {
+        if (tickets) {
+            return getSortedTickets(getFilteredTickets(tickets, selectedFilter), selectedCost);
+        }
+    }
 
-    const getTickets = async (searchId) => {
-        if (searchId) {
+    const getTicketsFromServer = async (searchId) => {
+        if (searchId && !ticketsStop) {
             try {
                 let tickets = await axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
-                let filteredTickets = getSortedTickets(getFilteredTickets(tickets.data.tickets, selectedFilter), selectedCost);
-                setTickets(filteredTickets);
+                if (tickets.data.stop) setTicketsStop(true);
+                setTickets(prev => [...prev, ...tickets.data.tickets]);
             } catch (e) {
-                setTimeout(() => {
-                    getTickets(searchId);
-                }, 500);
+                if (e.response.status === 500) {
+                    setTimeout(() => {
+                        getTicketsFromServer(searchId);
+                    }, 500);
+                } else {
+                    setTicketsStop(true);
+                    console.log('SOMETHING GOES WRONG ================');
+                }      
             }
         }   
     }
 
     const showMoreTickets = () => {
-        setTicketShowAmount(prev => prev += 5);
+        console.log(getTickets().length)
+        if (getTickets().length <= ticketShowAmount) {
+            getTicketsFromServer(searchId);
+            setTicketShowAmount(5);
+        } else {
+            setTicketShowAmount(prev => prev += 5);
+        }
     }
 
     return (
         <div className='ticket-list'>
-            {tickets.map((ticket, idx) => {
+            {getTickets() ? getTickets().map((ticket, idx) => {
                 if (idx < ticketShowAmount) {
                     return <Ticket key={ticket.price.toString() + ticket.carrier} ticket={ticket} />
                 }
-            })}
+             }) 
+             : 
+             "NO TICKETS"}
             <button onClick={showMoreTickets} className='btn'>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!</button>
         </div>
     )
